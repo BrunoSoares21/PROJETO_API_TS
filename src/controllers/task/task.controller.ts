@@ -2,6 +2,12 @@ import { Request, Response } from 'express'
 import Task from '../../models/task.entity'
 
 export default class TaskController{
+
+    static async index(req: Request, res: Response){
+        const tasks = await Task.find()
+        return res.json(tasks)
+    }
+
     static async store(req: Request, res: Response){
         const {title, completed} = req.body
 
