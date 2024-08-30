@@ -1,5 +1,6 @@
 import User from "../../models/user.entity"
 import { Request, Response } from "express"
+import bcrypt from "bcrypt"
 
 export default class UserController{
     static async index(req: Request, res: Response){
@@ -22,7 +23,7 @@ export default class UserController{
         const user = new User()
         user.name = name
         user.email = email
-        user.password = password+'-'
+        user.password = bcrypt.hashSync(password, 12)
         await user.save()
 
         return res.json(user)
