@@ -1,5 +1,6 @@
 import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm"
 import Task from "./task.entity"
+import Token from "./token.entity"
 
 @Entity()
 export default class User extends BaseEntity{
@@ -17,4 +18,7 @@ export default class User extends BaseEntity{
 
     @OneToMany(() => Task, task => task.user)
     tasks!: Task[]
+
+    @OneToMany(() => Token, token => token.user)
+    tokens!: Token[]
 }
