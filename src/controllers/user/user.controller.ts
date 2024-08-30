@@ -40,12 +40,15 @@ export default class UserController{
         const { email, password } = req.body
 
         const user = await User.findOneBy({email})
+        if(!user){
+            return res.status(401).json({msg: "Usuário incorreto!"})
+        }
         const passwordUser = user?.password ?? ''
 
         const passwordMatch = bcrypt.compareSync(password, passwordUser)
-
+        
         if(passwordMatch){
-            return res.status(401).json({msg: 'Usuário ou senha incorretos'})
+            return res.status(401).json({msg: 'Senha incorreta!'})
         }
 
         res.status(200).send('OK!')
