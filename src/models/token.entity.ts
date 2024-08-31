@@ -2,7 +2,7 @@ import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, ManyToOne } from "t
 import User from "./user.entity"
 
 @Entity()
-export default class Token extends BaseEntity {
+export default class Task extends BaseEntity {
     @PrimaryGeneratedColumn()
     id!: number
 
