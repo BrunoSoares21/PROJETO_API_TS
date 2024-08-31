@@ -1,6 +1,7 @@
 import User from "../../models/user.entity"
 import { Request, Response } from "express"
 import bcrypt from "bcrypt"
+import Token from "../../models/token.entity"
 
 export default class UserController{
     static async index(req: Request, res: Response){
@@ -51,6 +52,22 @@ export default class UserController{
             return res.status(401).json({msg: 'Senha incorreta!'})
         }
 
-        res.status(200).send('OK!')
+        // Remove tokens anteriores
+        await Token.delete({ userId: user?.id })
+
+        const token = new Token()
+
+        //res.status(200).send('OK!')
+
+        const generatedToken = bcrypt.hashSync(`${user.id}${Date.now()}`, 8).slice(-31)
+        const newToken =new Token()
+        newToken.token = generatedToken
+        newToken.userId = user.id
+        newToken.expiresAt = new Date(Date.now() + 60 * 60 * 1000)
+        newToken.refreshToken = generatedToken
+
+        await newToken.save()
+
+        res.json(newToken)
     }
 }
